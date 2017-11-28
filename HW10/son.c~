@@ -1,0 +1,182 @@
+#include <stdio.h>
+#define LEN_CHAR_ARR 30
+#define MAX_ELEMENT 20
+
+typedef struct{
+
+	int ID;
+	char name[LEN_CHAR_ARR];
+	char surname[LEN_CHAR_ARR];
+		
+}stu_t;
+typedef struct{
+
+	char degree[LEN_CHAR_ARR];
+	int ID;
+	char name[LEN_CHAR_ARR];
+	char surname[LEN_CHAR_ARR];
+			
+}lecr_t;
+typedef struct{
+
+	int code;
+	char name[LEN_CHAR_ARR];
+	int ID;
+
+}lec_t;
+typedef struct{
+
+	char class[LEN_CHAR_ARR];
+	char day[LEN_CHAR_ARR];
+	int time;
+	int duration;
+	int code;
+		
+}sch_t;
+typedef struct{
+
+	int ID;
+	int code;
+	
+}cou_t;
+
+void getData(stu_t *stu, lecr_t *lecr, lec_t *lec, sch_t *sch, cou_t *cou);
+						
+int main(){
+
+	/*FILE *ifp, *ofp;*/
+	
+	stu_t stu[MAX_ELEMENT];
+	lecr_t lecr[MAX_ELEMENT]; 
+	lec_t lec[MAX_ELEMENT];
+	sch_t sch[MAX_ELEMENT];
+	cou_t cou[MAX_ELEMENT];
+	
+	getData(stu, lecr, lec, sch, cou);
+
+	return 0;
+}				
+void getData(stu_t *stu, lecr_t *lecr, lec_t *lec, sch_t *sch, cou_t *cou){
+
+	int numFirst,numSecond,numThird,numFourth,numFifth;
+	int i,j,x,y,z,k,count;
+	char *strname, *strsurname;
+
+	FILE *ifp;
+	FILE *ofp;
+
+	ifp=fopen("input.dat","rb");
+	
+	if(ifp==NULL){
+		printf("file open error");
+	}
+	fread(&numFirst,sizeof(int),1,ifp);
+	fread(stu,sizeof(stu_t),numFirst,ifp);
+
+	fread(&numSecond,sizeof(int),1,ifp);
+	fread(lecr,sizeof(lecr_t),numSecond,ifp);
+
+	fread(&numThird,sizeof(int),1,ifp);
+	fread(lec,sizeof(lec_t),numThird,ifp);
+
+	fread(&numFourth,sizeof(int),1,ifp);
+	fread(sch,sizeof(sch_t),numFourth,ifp);
+
+	fread(&numFifth,sizeof(int),1,ifp);
+	fread(cou,sizeof(cou_t),numFifth,ifp);
+	
+	fclose(ifp);
+
+	ofp=fopen("output.txt","w+");
+		
+	if(ofp==NULL){
+		printf("file open error");
+	}
+	fprintf(ofp,"Lecture-Lecturer\n");
+	
+	x=0;
+	while(x<numThird){
+				
+		for(j=0; j<numThird; j++){
+	
+			for(i=0; i<numSecond; i++){
+			
+				if(lec[j].ID==lecr[i].ID){
+		
+					strname=lecr[i].name;
+					strsurname=lecr[i].surname;
+				
+					count=0;
+					for(z=0; z<numFifth; z++){
+					
+						if(lec[x].code==cou[z].code){
+					
+							count++;
+						}
+					}	
+					fprintf(ofp,"%s %s %s %d\n",lec[j].name,strname,strsurname,count);	
+					x++;
+				}
+			}
+		}
+	}
+	fprintf(ofp,"\nStudent-Lecture\n");
+	
+	x=0;
+	while(x<numFirst){
+	
+		for(j=0; j<numFirst; j++){
+		
+			count=0;
+			for(i=0; i<numFifth; i++){
+			
+				if(stu[j].ID==cou[i].ID){
+				
+					count++;
+				}	
+			}
+			fprintf(ofp,"%d %s %s %d\n",stu[j].ID,stu[j].name,stu[j].surname,count);
+			x++;
+		}
+	}
+	
+	/*------------------------------------------------------------------------*/
+	fprintf(ofp,"\nStudent-Day\n");
+	
+	x=0;
+	while(x<numFirst){
+	
+		fprintf(ofp,"%d %s %s ",stu[x].ID,stu[x].name,stu[x].surname);
+	
+		for(i=0; i<numFifth; i++){
+			
+			if(stu[x].ID==cou[i].ID){
+				
+				for(y=0; y<numFourth; y++){
+				
+					if(cou[i].code==sch[y].code){
+					
+						k=(numFifth-1);
+						while(stu[x].ID!=cou[k].ID){
+							
+							k--;
+						}
+						if(i==k){
+						
+							fprintf(ofp,"%s",sch[y].day);
+						}
+						else{
+						
+							fprintf(ofp,"%s, ",sch[y].day);		
+						}
+					}	
+				}
+			}
+		}
+		x++;
+		fprintf(ofp,"\n");
+	}	
+	fclose(ofp);
+
+	return;
+}					

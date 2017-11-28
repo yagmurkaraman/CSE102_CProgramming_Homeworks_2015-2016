@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+main()
+{
+    int i = 0,j=0,count[37]={'!'};
+    char ch = 97;
+    char string[37];
+    
+  
+    for (i=0; i<100; i++)
+    {
+        for(j=0; j<26; j++)
+            {
+            if (string[i]==(ch+j))
+                {
+                    count[j]++;
+                }
+        }
+    }
+    for(j=0; j<37; j++)
+	{
+		if(j>=65 && j<=90){
+            printf("\n%c -> %d",+j,count[j]);
+		}
+    }
+
+}

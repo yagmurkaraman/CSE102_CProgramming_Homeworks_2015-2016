@@ -1,0 +1,234 @@
+#include <stdio.h>
+
+typedef struct{
+
+	int ID;
+	char name[30];
+	char surname[30];
+		
+}student;
+
+typedef struct{
+
+	char degree[30];
+	int ID;
+	char name[30];
+	char surname[30];
+			
+}lecturer;
+
+typedef struct{
+
+	int code;
+	char name[30];
+	int ID;
+
+}lecture;
+
+typedef struct{
+
+	char class[30];
+	char day[30];
+	int time;
+	int duration;
+	int code;
+		
+}schedule;
+
+typedef struct{
+
+	int ID;
+	int code;
+	
+}course;
+/*
+void getData(FILE *ifp, struct student stu[], struct lecturer lecr[], 
+						struct lecture lec[], struct schedule sch[], struct course cou[]);
+						
+void printData(FILE *ofp, struct student stu[], struct lecturer lecr[], 
+						struct lecture lec[], struct schedule sch[], struct course cou[]);
+*/						
+int main(){
+
+	int i,j,x,y,z,s1,s2,s3,s4,s5;
+	int i2,j2,x2,x3,b,y2,j3;
+	char *strname, *strsurname;
+
+	FILE *ifp, *ofp;
+	
+	student stu[30];
+	lecturer lecr[30]; 
+	lecture lec[30];
+	schedule sch[30];
+	course cou[30];
+
+	ifp=fopen("input.dat","rb");
+	
+	
+	if(ifp==NULL){
+		printf("file open error");
+	}
+	
+	/*******************İLK STRUCT*********************************************/
+	fread(&i,sizeof(int),1,ifp);
+	printf("%d\n",i);
+	
+	fread(stu,sizeof(student),i,ifp);
+		
+	for(s1=0; s1<i; s1++){
+	
+		printf("%d %s %s\n", stu[s1].ID, stu[s1].name, stu[s1].surname);
+	}
+	/*******************İLK STRUCT*********************************************/
+	/*****************İKİNCİ STRUCT********************************************/
+	fread(&j,sizeof(int),1,ifp);
+	printf("%d\n",j);
+	
+	fread(lecr,sizeof(lecturer),j,ifp);
+		
+	for(s2=0; s2<j; s2++){
+	
+		printf("%s %d %s %s\n", lecr[s2].degree, lecr[s2].ID, lecr[s2].name, lecr[s2].surname);
+	}
+	/*****************İKİNCİ STRUCT********************************************/
+	/*****************ÜÇÜNCÜ STRUCT********************************************/
+	fread(&x,sizeof(int),1,ifp);
+	printf("%d\n",x);
+	
+	fread(lec,sizeof(lecture),x,ifp);
+		
+	for(s3=0; s3<x; s3++){
+	
+		printf("%d %s %d\n", lec[s3].code, lec[s3].name, lec[s3].ID);
+	}
+	/*****************ÜÇÜNCÜ STRUCT********************************************/
+	/*****************DÖRDÜNCÜ STRUCT********************************************/
+	fread(&y,sizeof(int),1,ifp);
+	printf("%d\n",y);
+	
+	fread(sch,sizeof(schedule),y,ifp);
+		
+	for(s4=0; s4<y; s4++){
+	
+		printf("%s %s %d %d %d\n", sch[s4].class, sch[s4].day, sch[s4].time, sch[s4].duration, sch[s4].code);
+	}
+	/****************DÖRDÜNCÜ STRUCT********************************************/
+	/*****************BEŞİNCİ STRUCT********************************************/
+	fread(&z,sizeof(int),1,ifp);
+	printf("%d\n",z);
+	
+	fread(cou,sizeof(course),z,ifp);
+		
+	for(s5=0; s5<z; s5++){
+	
+		printf("%d %d\n", cou[s5].ID, cou[s5].code);
+	}
+	/*****************BEŞİNCİ STRUCT********************************************/
+	fclose(ifp);
+	
+/***********************************************************************************************************************/		
+	
+	ofp=fopen("output.txt","w+");
+	
+	
+	if(ofp==NULL){
+		printf("file open error");
+	}
+	
+	fprintf(ofp,"Lecture-Lecturer\n");
+	
+	x2=0;
+	while(x2<x){
+				
+		for(j2=0; j2<x; j2++){
+	
+			for(i2=0; i2<j; i2++){
+			
+				if(lec[j2].ID==lecr[i2].ID){
+		
+					strname=lecr[i2].name;
+					strsurname=lecr[i2].surname;
+				
+					b=0;
+					for(x3=0; x3<z; x3++){
+					
+						if(lec[x2].code==cou[x3].code){
+					
+							b++;
+						}
+					}	
+					fprintf(ofp,"%s %s %s %d\n",lec[j2].name,strname,strsurname,b);	
+					x2++;
+				}
+			}
+		}
+	}
+	fprintf(ofp,"\nStudent-Lecture\n");
+	
+	x2=0;
+	while(x2<i){
+	
+		for(j2=0; j2<i; j2++){
+		
+			b=0;
+			for(i2=0; i2<z; i2++){
+			
+				if(stu[j2].ID==cou[i2].ID){
+				
+					b++;
+				}	
+			}
+			fprintf(ofp,"%d %s %s %d\n",stu[j2].ID,stu[j2].name,stu[j2].surname,b);
+			x2++;
+		}
+	}
+	
+	/*------------------------------------------------------------------------*/
+	fprintf(ofp,"\nStudent-Day\n");
+	
+	x2=0;
+	while(x2<i){
+	
+		fprintf(ofp,"%d %s %s ",stu[x2].ID,stu[x2].name,stu[x2].surname);
+	
+		for(i2=0; i2<z; i2++){
+			
+			/*printf("stu ID: %d\ncou ID: %d\n",stu[x2].ID,cou[i2].ID);*/
+			if(stu[x2].ID==cou[i2].ID){
+				
+				for(y2=0; y2<y; y2++){
+				
+					if(cou[i2].code==sch[y2].code){
+					
+						j3=(z-1);
+						while(stu[x2].ID!=cou[j3].ID){
+							
+							j3--;
+						}
+						if(i2==j3){
+						
+							fprintf(ofp,"%s",sch[y2].day);
+						}
+						else{
+						
+							fprintf(ofp,"%s, ",sch[y2].day);		
+						}
+					}	
+				}
+			}
+		}
+		x2++;
+		fprintf(ofp,"\n");
+	}	
+	fclose(ofp);
+	
+	return 0;
+}	
+/*					
+void getData(FILE *ifp, struct student stu[], struct lecturer lecr[], 
+						struct lecture lec[], struct schedule sch[], struct course cou[]){}
+						
+void printfData(FILE *ofp, struct student stu[], struct lecturer lecr[], 
+						struct lecture lec[], struct schedule sch[], struct course cou[]){}					
+						
+*/					

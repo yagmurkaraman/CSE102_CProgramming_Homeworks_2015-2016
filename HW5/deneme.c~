@@ -1,0 +1,125 @@
+#include <stdio.h>
+int initBoard(char board[]);
+char boardOrganizer(int index);
+void printBoard(char *board);
+int isPieceMovable(char *board);
+void emptyBuffer()
+{
+	while ( getchar() != '\n' );
+}
+void main()
+{
+	char board [64];
+	int initComplete = 0;
+	char empty;
+	
+	int command;
+	scanf("%d", &command);
+
+	while(command!=4)
+	{
+		switch(command)
+		{
+			case 1: initBoard(board); 
+				initComplete = 1; 
+				printf("OK\n");
+				break;
+			case 2: 
+				/*Read space character after command number*/
+				scanf("%c", &empty);
+				if (initComplete)
+				{
+					if(isPieceMovable(board))
+						printf("YES\n");
+					else
+						printf("NO\n");
+				}
+				else
+				{  
+					printf("Board is not initialized!\n");
+					emptyBuffer();
+				}
+				break;
+			case 3: 
+				if (initComplete)
+					printBoard(board);
+				else  
+					printf("Board is not initialized!\n");
+					emptyBuffer();
+				break;
+
+			default: printf("Invalid command!\n"); emptyBuffer(); break;
+
+		}	
+		
+		scanf("%d", &command);
+	
+	}
+}
+int initBoard(char board[])
+{
+	int i;
+	
+	for (i=0;i<64;i++)
+	{
+		board[i] = boardOrganizer(i);
+	}
+	
+	return (0);
+}
+char boardOrganizer(int index)
+{
+	char returnChar;
+	
+	switch (index)
+	{
+		case 0: returnChar = 'r'; break;	
+		case 1: returnChar = 'n'; break;
+		case 2: returnChar = 'b'; break;
+		case 3: returnChar = 'q'; break;
+		case 4: returnChar = 'k'; break;
+		case 5: returnChar = 'b'; break;
+		case 6: returnChar = 'n'; break;
+		case 7: returnChar = 'r'; break;
+		case 8: returnChar = 'p'; break;
+		case 9: returnChar = 'p'; break;
+		case 10: returnChar = 'p'; break;
+		case 11: returnChar = 'p'; break;
+		case 12: returnChar = 'p'; break;
+		case 13: returnChar = 'p'; break;
+		case 14: returnChar = 'p'; break;
+		case 15: returnChar = 'p'; break;
+		case 48: returnChar = 'P'; break;
+		case 49: returnChar = 'P'; break;
+		case 50: returnChar = 'P'; break;
+		case 51: returnChar = 'P'; break;
+		case 52: returnChar = 'P'; break;
+		case 53: returnChar = 'P'; break;
+		case 54: returnChar = 'P'; break;
+		case 55: returnChar = 'P'; break;
+		case 56: returnChar = 'R'; break;
+		case 57: returnChar = 'N'; break;
+		case 58: returnChar = 'B'; break;
+		case 59: returnChar = 'K'; break;
+		case 60: returnChar = 'Q'; break;
+		case 61: returnChar = 'B'; break;
+		case 62: returnChar = 'N'; break;
+		case 63: returnChar = 'R'; break;
+		default: returnChar = ' '; break;			
+	}
+	
+	return (returnChar);	
+}
+int isPieceMovable(char *board){
+
+}
+void printBoard(char *board){
+
+	
+
+
+
+
+
+
+}

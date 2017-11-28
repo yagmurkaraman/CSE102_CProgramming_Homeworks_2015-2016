@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define RECORDS 1000
+#define MAX_FIELDS 11
+
+int hwDecode(const char filename[], int arr_out[] );
+
+int main(){
+
+	int *arr_out;
+	
+	arr_out=(int *)malloc(10*sizeof(int));
+	
+	hwDecode ("test.bin", arr_out);
+	
+}
+int hwDecode(const char filename[], int arr_out[] ){
+	
+	int sizeFile, eachStruct, exceptAvg;
+	int intsize,floatsize,doublesize,longsize,charsize;
+
+	FILE *ifp;	
+	
+	ifp=fopen("test.bin","rb");	
+
+	if(ifp=NULL){
+	
+		return -1;
+	
+	}
+	intsize=sizeof(int);
+	printf("%d\n",intsize);
+	doublesize=sizeof(double);
+	printf("%d\n",doublesize);
+	floatsize=sizeof(float);
+	printf("%d\n",floatsize);
+	charsize=sizeof(unsigned char);
+	printf("%d\n",charsize);
+	longsize=sizeof(long long int);
+	printf("%d\n",longsize);
+	
+	fseek(ifp,0,SEEK_END);
+	sizeFile=ftell(ifp);
+	printf("%d\n",sizeFile);
+	fseek(ifp,0,SEEK_SET);
+	
+	eachStruct=(sizeFile/RECORDS);
+	printf("%d\n",eachStruct);
+	exceptAvg=(eachStruct-doublesize);
+	printf("%d\n",exceptAvg);
+
+	arr_out[0]=5;
+	arr_out[1]=3;
+	arr_out[2]=2;
+	
+	for(i=2; i<MAX_FIELDS-1; i++){
+	
+		arr_out[i]=-1;
+	}	
+	fclose(ifp);
+		
+	return *arr_out;
+}

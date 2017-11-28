@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <math.h>
+int cont(char *str,int left,int right);
+int isPalindrome(char * str);
+int main(){
+
+	char str;
+	
+	isPalindrome(" a-sx.()CX5s++A y  ");
+}
+int isPalindrome(char * str){
+
+	int size;
+	
+	if(str==NULL)
+		return 0;
+		
+	else if(str[0]=='\0')
+		return 0;
+		
+	else{
+
+		for(size=0; str[size]!='\0'; size++){
+			/* size */
+		}
+	}
+	cont(str,0,size-1);
+}
+int cont(char *str, int left, int right){
+
+		int i,j,k,c,size;
+		
+		while(left<right-1){
+		
+			while((str[left]<'A' || str[left]>'Z') && (str[left]<'a' || str[left]>'z')){
+			
+			left++;	/* bastan ilk karakter index */
+			}
+			while((str[right]<'A' || str[right]>'Z') && (str[right]<'a' || str[right]>'z')){
+	
+			right--;	/* sondan ilk karakter index */
+			}
+			if(((str[left]-str[right])==0) || (abs(str[left]-str[right])==32)){
+			
+				cont(str,left+1,right-1);	
+			}
+			else{	
+				printf("hayır\n");
+				return 0;
+			}
+			return 1;
+		}
+		printf("Evet\n");
+		
+	return 0;
+}		

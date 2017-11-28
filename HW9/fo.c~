@@ -1,0 +1,178 @@
+/*----------------------------------------------------------------------------*/
+/*															                  */
+/* HW09_141044016_Yagmur_Karaman                                              */
+/*																              */
+/* hw9.c                                                                      */
+/* ------                                                                     */
+/* Created on 29/04/2016 by Yagmur_Karaman                                    */
+/*                                                                            */
+/* Description                                                                */
+/* ------------                                                               */
+/*		The hw9.c contains the implementations of functions for               */  
+/*		the Homework IX, which are used that keeps information about          */ 
+/*		world countries.                                                      */
+/*		                                                                      */
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*								İncludes                                      */
+/*----------------------------------------------------------------------------*/
+#include <stdio.h>
+#include <string.h>
+
+typedef struct{
+
+	char name[25];
+	int pop;
+	int area;
+	int sold;
+	char neig[10];
+
+}co_t;
+
+/*----------------------------------------------------------------------------*/
+/*							Function Prototypes                               */
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*																              */
+/* void read_a(co_t *country)                                                 */
+/* --------------------------                                                 */
+/*															                  */
+/*		co_t *country - struct of program                                     */
+/*                                                                            */
+/* Description                                                                */
+/* ------------                                                               */
+/*		This function */
+
+void read_a(co_t *country);
+void read_b(co_t *country);
+void read_c(co_t *country);
+void read_d(co_t *country);
+void read_e(co_t *country);
+
+int main(){
+
+	char choice;
+	
+	co_t country[100];
+
+	
+	printf("Make your choice:\n");
+	scanf("%c",&choice);
+
+	switch(choice){
+	
+		case 'a': read_a(country); break;
+		case 'b': read_b(country); break;
+		case 'c': read_c(country); break;
+		case 'd': read_d(country); break;
+		case 'e': read_e(country); break;	
+	}
+	return 0;
+}
+void read_a(co_t *country){
+
+	int i,k;
+	char choice;
+	
+	i=0;
+	while(i<100){
+	
+		scanf("%s",country[i].name);
+		scanf("%d",&country[i].pop);	
+		scanf("%d",&country[i].area);
+		scanf("%d",&country[i].sold);
+
+		printf("%s\n",country[i].name);		
+	
+		k=0;
+		while(k<10){
+		
+			while(scanf("%s",country[k].neig)){
+
+				if(strcmp(country[k].neig,"-1")!=0)
+				{		
+					k++;
+				}
+				if(strcmp(country[k].neig,"-1")==0){
+		
+					printf("Make your choice:\n");
+					scanf(" %c",&choice);
+			
+/*############################################################################*/
+					while(choice=='a'){
+						i++;
+						
+						scanf("%s",country[i].name);
+						scanf("%d",&country[i].pop);	
+						scanf("%d",&country[i].area);
+						scanf("%d",&country[i].sold);
+
+						printf("%s\n",country[i].name);		
+
+						k=0;
+						while(k<10){
+	
+							while(scanf("%s",country[k].neig)){
+
+								if(strcmp(country[k].neig,"-1")!=0)
+								{		
+									k++;
+								}
+								if(strcmp(country[k].neig,"-1")==0){
+	
+									printf("Make your choice:\n");
+									scanf(" %c",&choice);
+									
+									switch(choice){
+
+										case 'b': read_b(country); break;
+										case 'c': read_c(country); break;
+										case 'd': read_d(country); break;
+										case 'e': read_e(country); break;	
+									}
+								}
+							}
+						}
+					}
+					if(choice=='b'){
+					
+						read_b(country);
+					}
+					if(choice=='c'){
+					
+						read_c(country);
+					}
+					if(choice=='d'){
+					
+						read_d(country);
+					}
+					if(choice=='e'){
+						
+						read_e(country);
+						
+						return;
+					}
+				}		
+			}
+		}
+	}
+}
+void read_b(co_t *country){ 
+
+	return;
+}
+void read_c(co_t *country){
+	
+	return;
+}
+void read_d(co_t *country){
+	
+	return;
+}
+void read_e(co_t *country){
+
+	printf("<output>Good bye\n");
+				
+	return;
+}
+
